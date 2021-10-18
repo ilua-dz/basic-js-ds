@@ -38,7 +38,20 @@ module.exports = class BinarySearchTree {
 
 	has = (data) => this.find(data) ? true : false;
 
-	remove = (data) => { }
+	remove = (data) => this.origin = this.removeNode(this.origin, data);
+
+	removeNode(current, data) {
+		if (data === current.data) {
+			if (!current.left) return current.right;
+			if (!current.right) return current.left;
+			let minRightBranch = current.right;
+			while (minRightBranch.left) minRightBranch = minRightBranch.left
+			current.data = minRightBranch.data;
+			current.right = this.removeNode(current.right, minRightBranch.data);
+		} else if (data < current.data) current.left = this.removeNode(current.left, data);
+		else if (data > current.data) current.right = this.removeNode(current.right, data);
+		return current;
+	}
 
 	minMax = (side) => {
 		let current = this.origin;
